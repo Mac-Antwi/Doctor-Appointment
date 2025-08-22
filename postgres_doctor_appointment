@@ -1,0 +1,188 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.5
+-- Dumped by pg_dump version 17.5
+
+-- Started on 2025-08-22 15:11:22
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 218 (class 1259 OID 16445)
+-- Name: appointment; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.appointment (
+    appointment_id integer NOT NULL,
+    appointment_date date NOT NULL,
+    arrival_time time without time zone,
+    completetion_time time without time zone,
+    patient_id integer,
+    doctor_id integer,
+    clinic_id integer
+);
+
+
+ALTER TABLE public.appointment OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16444)
+-- Name: appointment_appointment_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.appointment_appointment_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.appointment_appointment_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4916 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: appointment_appointment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.appointment_appointment_id_seq OWNED BY public.appointment.appointment_id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 16466)
+-- Name: clinic; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.clinic (
+    clinic_id integer NOT NULL,
+    clinic_name character varying(255) NOT NULL,
+    clinic_address character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.clinic OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 16459)
+-- Name: doctor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.doctor (
+    doctor_id integer NOT NULL,
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.doctor OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16452)
+-- Name: patient; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.patient (
+    patient_id integer NOT NULL,
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL,
+    dob date
+);
+
+
+ALTER TABLE public.patient OWNER TO postgres;
+
+--
+-- TOC entry 4754 (class 2604 OID 16448)
+-- Name: appointment appointment_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.appointment ALTER COLUMN appointment_id SET DEFAULT nextval('public.appointment_appointment_id_seq'::regclass);
+
+
+--
+-- TOC entry 4756 (class 2606 OID 16450)
+-- Name: appointment appointment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.appointment
+    ADD CONSTRAINT appointment_pkey PRIMARY KEY (appointment_id);
+
+
+--
+-- TOC entry 4762 (class 2606 OID 16472)
+-- Name: clinic clinic_clinic_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.clinic
+    ADD CONSTRAINT clinic_clinic_id_key UNIQUE (clinic_id);
+
+
+--
+-- TOC entry 4760 (class 2606 OID 16465)
+-- Name: doctor doctor_doctor_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.doctor
+    ADD CONSTRAINT doctor_doctor_id_key UNIQUE (doctor_id);
+
+
+--
+-- TOC entry 4758 (class 2606 OID 16458)
+-- Name: patient patient_patient_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.patient
+    ADD CONSTRAINT patient_patient_id_key UNIQUE (patient_id);
+
+
+--
+-- TOC entry 4763 (class 2606 OID 16483)
+-- Name: appointment clinic_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.appointment
+    ADD CONSTRAINT clinic_id FOREIGN KEY (clinic_id) REFERENCES public.clinic(clinic_id);
+
+
+--
+-- TOC entry 4764 (class 2606 OID 16478)
+-- Name: appointment doctor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.appointment
+    ADD CONSTRAINT doctor_id FOREIGN KEY (doctor_id) REFERENCES public.doctor(doctor_id);
+
+
+--
+-- TOC entry 4765 (class 2606 OID 16473)
+-- Name: appointment patient_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.appointment
+    ADD CONSTRAINT patient_id FOREIGN KEY (patient_id) REFERENCES public.patient(patient_id);
+
+
+-- Completed on 2025-08-22 15:11:23
+
+--
+-- PostgreSQL database dump complete
+--
+
